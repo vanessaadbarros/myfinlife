@@ -1,0 +1,81 @@
+Plano de Sistema: Gestor Financeiro Pessoal Inteligente
+1. Conceito Central e Visão do Produto
+O sistema não será apenas um "bloco de notas" de despesas, mas sim um assistente financeiro proativo. Ele deve oferecer uma visão 360° da saúde financeira do usuário, conectando o presente (orçamento diário) com o futuro (metas e investimentos), sempre com foco em simplicidade e insights acionáveis.
+
+2. Módulos Principais do Sistema
+Podemos dividir o sistema em módulos interligados para facilitar o desenvolvimento e a compreensão.
+
+Módulo 1: Orçamento e Fluxo de Caixa (O Coração do Sistema)
+Este é o ponto de partida. O objetivo é que o usuário saiba exatamente para onde seu dinheiro está indo.
+
+Funcionalidades:
+
+Cadastro de Rendas: Permitir o registro de fontes de renda fixas (salário) e variáveis (freelances, comissões).
+
+Cadastro de Despesas:
+
+Despesas Fixas: Contas recorrentes (aluguel, internet, mensalidades). O sistema deve prever esses gastos.
+
+Despesas Variáveis: Gastos do dia a dia (alimentação, transporte, lazer).
+
+Categorização Automática e Manual: O usuário pode criar suas próprias categorias e o sistema pode sugerir categorias com base no nome da transação (ex: "iFood" -> "Alimentação/Delivery").
+
+Integração com Contas Bancárias (Open Finance Brasil): A funcionalidade mais poderosa. Conectar-se aos bancos do usuário para importar transações automaticamente, eliminando a necessidade de lançamento manual.
+
+Criação de Orçamentos: Definir limites de gastos por categoria (ex: R$ 500 para lazer) e alertar o usuário quando ele estiver se aproximando do limite.
+
+Módulo 2: Metas e Objetivos (O Rumo a Seguir)
+Este módulo conecta o esforço de economizar com um propósito claro.
+
+Funcionalidades:
+
+Criação de Metas: O usuário pode criar metas de curto, médio e longo prazo (ex: "Reserva de Emergência", "Viagem para a Europa", "Comprar um Carro", "Aposentadoria").
+
+Definição de Parâmetros: Para cada meta, definir o valor total necessário e o prazo desejado.
+
+Planejamento de Contribuição: O sistema calcula quanto o usuário precisa economizar por mês para atingir a meta no prazo. Ex: Valor Mensal = (Valor Total - Valor Atual) / Meses Restantes.
+
+Acompanhamento Visual: Barras de progresso e gráficos que mostram a evolução de cada meta.
+
+Vinculação com Investimentos: Permitir que o usuário "vincule" um investimento específico a uma meta (ex: um Tesouro Selic para a reserva de emergência).
+
+Módulo 3: Carteira de Investimentos (O Multiplicador)
+O objetivo é consolidar e acompanhar o crescimento do patrimônio do usuário.
+
+Funcionalidades:
+
+Consolidação de Ativos:
+
+Cadastro Manual: Permitir que o usuário insira seus ativos (Ações, Fundos Imobiliários, Tesouro Direto, Criptomoedas, etc.), informando quantidade, preço de compra e data.
+
+Integração com Corretoras (Via API): Conectar-se a corretoras para importar a carteira de investimentos de forma automática, mostrando a posição consolidada.
+
+Acompanhamento de Rentabilidade: Gráficos que mostram a rentabilidade da carteira total e de cada ativo individualmente ao longo do tempo.
+
+Análise de Alocação: Gráficos de pizza ("pizza charts") que mostram a distribuição do patrimônio por tipo de ativo (renda fixa, renda variável) e por setor.
+
+Projeção de Patrimônio: Com base nos aportes mensais e em uma taxa de juros estimada, projetar o crescimento futuro do patrimônio. A fórmula base seria a de juros compostos: 
+
+M=C(1+i) 
+t
+ 
+ onde M é o montante final, C é o capital inicial, i é a taxa de juros e t é o tempo.
+
+Módulo 4: Dashboard e Relatórios (A Visão Geral)
+Esta é a tela principal, onde o usuário terá uma visão consolidada de tudo.
+
+Funcionalidades:
+
+Painel Principal: Widgets customizáveis mostrando:
+
+Saldo atual consolidado (soma de todas as contas).
+
+Gráfico de "Receitas vs. Despesas" do mês.
+
+Status dos orçamentos por categoria.
+
+Progresso das principais metas.
+
+Valor total e rentabilidade da carteira de investimentos.
+
+Relatórios Detalhados: Gerar relatórios mensais e anuais em PDF, mostrando o fluxo de caixa, evolução do patrimônio, e os maiores gastos por categoria.

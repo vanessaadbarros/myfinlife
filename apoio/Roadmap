@@ -1,0 +1,16 @@
+Roadmap de Implementação
+Fase 1 (MVP - 4-6 semanas):
+Estrutura base do banco de dados
+CRUD de transações e categorias
+Dashboard básico com gráficos
+Sistema de orçamentos simples
+Fase 2 (4-6 semanas):
+Sistema de metas completo
+Integração com APIs de preços
+Carteira de investimentos básica
+Relatórios em PDF
+Fase 3 (6-8 semanas):
+Integração Open Finance
+Categorização inteligente com ML
+Projeções avançadas
+Otimizações e testes

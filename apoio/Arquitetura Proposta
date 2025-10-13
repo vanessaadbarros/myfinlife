@@ -1,0 +1,76 @@
+Estrutura de Banco de Dados
+Vou propor um esquema de banco que suporte todos os módulos:
+-- Usuários
+users (id, email, name, created_at, settings)
+
+-- Contas Bancárias
+bank_accounts (id, user_id, bank_name, account_number, balance, is_active)
+
+-- Transações
+transactions (id, user_id, account_id, amount, description, category_id, date, type, is_recurring)
+
+-- Categorias
+categories (id, user_id, name, type, color, icon, parent_id)
+
+-- Orçamentos
+budgets (id, user_id, category_id, amount, period, spent_amount, alert_threshold)
+
+-- Metas
+goals (id, user_id, name, target_amount, current_amount, target_date, priority, status)
+
+-- Investimentos
+investments (id, user_id, symbol, asset_type, quantity, avg_price, current_price, broker)
+
+-- Aportes para Metas
+goal_contributions (id, goal_id, amount, date, source_type, source_id)
+
+Detalhamento dos Módulos
+Módulo 1: Orçamento e Fluxo de Caixa
+Funcionalidades Técnicas:
+API de Transações: CRUD completo com filtros por data, categoria, valor
+Categorização Inteligente: ML básico para sugerir categorias baseado em palavras-chave
+Integração Open Finance: Webhook para receber transações automáticas
+Alertas de Orçamento: Sistema de notificações push quando limite é atingido
+Endpoints Propostos:
+POST /api/transactions - Criar transação
+GET /api/transactions - Listar com filtros
+PUT /api/transactions/:id - Atualizar
+DELETE /api/transactions/:id - Deletar
+GET /api/budgets/status - Status dos orçamentos
+POST /api/bank-accounts/connect - Conectar conta bancária
+
+
+Módulo 2: Metas e Objetivos
+Funcionalidades Técnicas:
+Calculadora de Metas: Algoritmo que calcula aporte mensal necessário
+Progress Tracking: Atualização automática baseada em transações
+Visualização: Gráficos de progresso com Chart.js
+Integração com Investimentos: Vincular metas a ativos específicos
+Algoritmo de Cálculo:
+def calculate_monthly_contribution(target_amount, current_amount, target_date):
+    months_remaining = (target_date - datetime.now()).days / 30.44
+    if months_remaining <= 0:
+        return 0
+    return (target_amount - current_amount) / months_remaining
+
+
+
+Módulo 3: Carteira de Investimentos
+Funcionalidades Técnicas:
+Integração com APIs: Alpha Vantage, Yahoo Finance para preços em tempo real
+Cálculo de Rentabilidade: ROI, rentabilidade anualizada
+Análise de Alocação: Algoritmos para distribuição por setor/tipo
+Projeções: Simulação Monte Carlo para cenários futuros
+Fórmulas Implementadas:
+def calculate_portfolio_return(investments):
+    total_value = sum(inv.quantity * inv.current_price for inv in investments)
+    total_cost = sum(inv.quantity * inv.avg_price for inv in investments)
+    return ((total_value - total_cost) / total_cost) * 100
+
+
+Módulo 4: Dashboard e Relatórios
+Funcionalidades Técnicas:
+Widgets Customizáveis: Sistema de drag-and-drop para personalização
+Relatórios PDF: Geração automática com ReportLab
+Gráficos Interativos: Chart.js para visualizações dinâmicas
+Exportação: CSV, PDF, Excel

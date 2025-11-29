@@ -152,6 +152,70 @@ export function useRecurringTransactions() {
     return addRecurringTransaction(duplicate)
   }
 
+  const linkTransactionToInvoice = async (transactionId: string, creditCardId: string, transactionDate: string) => {
+    try {
+      const { data: card, error: cardError } = await supabase
+        .from('credit_cards')
+        .select('closing_day, due_day')
+        .eq('id', creditCardId)
+        .single()
+
+      if (cardError || !card) throw cardError || new Error('Cartão não encontrado')
+
+      const purchase = new Date(transactionDate)
+      const purchaseDay = purchase.getDate()
+
+      let referenceMonth = new Date(purchase.getFullYear(), purchase.getMonth(), 1)
+      if (purchaseDay > card.closing_day) {
+        referenceMonth = new Date(purchase.getFullYear(), purchase.getMonth() + 1, 1)
+      }
+
+      const closingDate = new Date(referenceMonth.getFullYear(), referenceMonth.getMonth(), card.closing_day)
+      let dueDate = new Date(referenceMonth.getFullYear(), referenceMonth.getMonth(), card.due_day)
+      if (dueDate < closingDate) {
+        dueDate.setMonth(dueDate.getMonth() + 1)
+      }
+
+      const { data: invoice, error: invoiceError } = await supabase
+        .from('credit_card_invoices')
+        .upsert([{
+          user_id: user!.id,
+          credit_card_id: creditCardId,
+          reference_month: referenceMonth.toISOString().split('T')[0],
+          closing_date: closingDate.toISOString().split('T')[0],
+          due_date: dueDate.toISOString().split('T')[0],
+          total_amount: 0,
+          paid_amount: 0,
+          status: 'open'
+        }], {
+          onConflict: 'credit_card_id,reference_month'
+        })
+        .select('id')
+        .single()
+
+      if (invoiceError || !invoice) throw invoiceError || new Error('Erro ao criar fatura')
+
+      await supabase
+        .from('transactions')
+        .update({ invoice_id: invoice.id })
+        .eq('id', transactionId)
+
+      const { data: invoiceTransactions } = await supabase
+        .from('transactions')
+        .select('amount')
+        .eq('invoice_id', invoice.id)
+
+      const total = (invoiceTransactions || []).reduce((sum, t) => sum + t.amount, 0)
+
+      await supabase
+        .from('credit_card_invoices')
+        .update({ total_amount: total })
+        .eq('id', invoice.id)
+    } catch (err) {
+      console.error('Erro ao vincular transação recorrente à fatura:', err)
+    }
+  }
+
   // Gerar transações do mês a partir dos custos recorrentes
   const generateMonthlyTransactions = async (month: number, year: number) => {
     if (!user) return { error: new Error('Usuário não autenticado') }
@@ -196,7 +260,7 @@ export function useRecurringTransactions() {
           }
 
           // Criar a transação
-          await supabase
+          const { data: newTransaction, error: insertError } = await supabase
             .from('transactions')
             .insert({
               user_id: user.id,
@@ -206,8 +270,19 @@ export function useRecurringTransactions() {
               type: rt.type,
               category_id: rt.category_id,
               budget_box_id: rt.budget_box_id,
+              payment_method: rt.payment_method || 'cash',
+              credit_card_id: rt.credit_card_id,
+              account_id: rt.account_id,
               is_recurring: true
             })
+            .select()
+            .single()
+
+          if (insertError) throw insertError
+
+          if (newTransaction && rt.payment_method === 'credit' && rt.credit_card_id) {
+            await linkTransactionToInvoice(newTransaction.id, rt.credit_card_id, newTransaction.date)
+          }
         }
       }
 

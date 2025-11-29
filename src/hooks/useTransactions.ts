@@ -246,6 +246,19 @@ export function useTransactions(month?: number, year?: number) {
     try {
       // Buscar a transação antes de deletar para atualizar o saldo e fatura
       const transaction = transactions.find(t => t.id === id)
+      let goalIdToUpdate: string | null = null
+      let goalAmountToSubtract = 0
+
+      if (transaction?.goal_id) {
+        goalIdToUpdate = transaction.goal_id
+        goalAmountToSubtract = transaction.amount ?? 0
+
+        // Remover contribuições vinculadas a esta transação
+        await supabase
+          .from('goal_contributions')
+          .delete()
+          .eq('transaction_id', id)
+      }
       
       const { error } = await supabase
         .from('transactions')
@@ -264,6 +277,22 @@ export function useTransactions(month?: number, year?: number) {
       // Atualizar total da fatura se era compra no crédito
       if (transaction?.invoice_id && transaction.payment_method === 'credit') {
         await updateInvoiceTotal(transaction.invoice_id)
+      }
+
+      if (goalIdToUpdate) {
+        const { data: goal } = await supabase
+          .from('goals')
+          .select('current_amount')
+          .eq('id', goalIdToUpdate)
+          .single()
+
+        const currentAmount = goal?.current_amount ?? 0
+        const newAmount = Math.max(currentAmount - goalAmountToSubtract, 0)
+
+        await supabase
+          .from('goals')
+          .update({ current_amount: newAmount })
+          .eq('id', goalIdToUpdate)
       }
       
       setTransactions((prev) => prev.filter((t) => t.id !== id))

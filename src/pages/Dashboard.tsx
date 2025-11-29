@@ -3,7 +3,8 @@ import { Plus, TrendingUp, TrendingDown, DollarSign } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { useTransactions } from '@/hooks/useTransactions'
 import { useCategories } from '@/hooks/useCategories'
-import { Card } from '@/components/ui/Card'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card'
+import { Badge } from '@/components/ui/Badge'
 import { Layout } from '@/components/Layout'
 import { TransactionModal } from '@/components/TransactionModal'
 import { InstallmentModal } from '@/components/InstallmentModal'
@@ -129,125 +130,125 @@ export function Dashboard() {
     <Layout title="Dashboard">
       <div className="space-y-6">
         {/* Welcome Message */}
-        <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg p-6 text-white">
-          <h2 className="text-2xl font-bold mb-2">
-            Olá, {profile?.name}! Bem-vindo de volta
-          </h2>
-          <p className="text-blue-100">
-            Aqui está um resumo das suas finanças para {getMonthName(month)} de {year}
-          </p>
-        </div>
+        <Card variant="elevated" className="bg-gradient-to-r from-myfinlife-blue to-myfinlife-blue/90 text-myfinlife-white border-none">
+          <CardContent className="p-6">
+            <h2 className="text-2xl font-bold mb-2">
+              Olá, {profile?.name}! Bem-vindo de volta
+            </h2>
+            <p className="text-myfinlife-blue-light">
+              Aqui está um resumo das suas finanças para {getMonthName(month)} de {year}
+            </p>
+          </CardContent>
+        </Card>
 
         {/* KPI Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Card className="relative">
+          <Card variant="elevated" className="relative">
             <div className="absolute top-4 right-4">
-              <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                <TrendingUp className="text-green-600" size={20} />
+              <div className="w-10 h-10 bg-success-500/10 rounded-hex flex items-center justify-center">
+                <TrendingUp className="text-success-500" size={20} />
               </div>
             </div>
-            <div className="pt-2">
-              <p className="text-sm text-gray-600 mb-1">Receitas</p>
-              <p className="text-3xl font-bold text-gray-900 mb-2">
+            <CardContent className="pt-2">
+              <p className="text-sm text-myfinlife-blue/70 mb-1">Receitas</p>
+              <p className="text-3xl font-bold text-myfinlife-blue mb-2">
                 {formatCurrency(stats.income)}
               </p>
-              <p className="text-sm text-green-600 flex items-center">
-                <TrendingUp size={14} className="mr-1" />
+              <Badge variant="success" size="sm">
+                <TrendingUp size={12} className="mr-1" />
                 ↑ 12.5% vs mês anterior
-              </p>
-            </div>
+              </Badge>
+            </CardContent>
           </Card>
 
-          <Card className="relative">
+          <Card variant="elevated" className="relative">
             <div className="absolute top-4 right-4">
-              <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
-                <TrendingDown className="text-red-600" size={20} />
+              <div className="w-10 h-10 bg-danger-500/10 rounded-hex flex items-center justify-center">
+                <TrendingDown className="text-danger-500" size={20} />
               </div>
             </div>
-            <div className="pt-2">
-              <p className="text-sm text-gray-600 mb-1">Despesas</p>
-              <p className="text-3xl font-bold text-gray-900 mb-2">
+            <CardContent className="pt-2">
+              <p className="text-sm text-myfinlife-blue/70 mb-1">Despesas</p>
+              <p className="text-3xl font-bold text-myfinlife-blue mb-2">
                 {formatCurrency(stats.expenses)}
               </p>
-              <p className="text-sm text-red-600 flex items-center">
-                <TrendingDown size={14} className="mr-1" />
+              <Badge variant="danger" size="sm">
+                <TrendingDown size={12} className="mr-1" />
                 ↓ 8.2% vs mês anterior
-              </p>
-            </div>
+              </Badge>
+            </CardContent>
           </Card>
 
-          <Card className="relative">
+          <Card variant="elevated" className="relative">
             <div className="absolute top-4 right-4">
-              <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                <TrendingUp className="text-purple-600" size={20} />
+              <div className="w-10 h-10 bg-myfinlife-blue/10 rounded-hex flex items-center justify-center">
+                <TrendingUp className="text-myfinlife-blue" size={20} />
               </div>
             </div>
-            <div className="pt-2">
-              <p className="text-sm text-gray-600 mb-1">Investimentos</p>
-              <p className="text-3xl font-bold text-gray-900 mb-2">
+            <CardContent className="pt-2">
+              <p className="text-sm text-myfinlife-blue/70 mb-1">Investimentos</p>
+              <p className="text-3xl font-bold text-myfinlife-blue mb-2">
                 {formatCurrency(stats.investments)}
               </p>
-              <p className="text-sm text-purple-600 flex items-center">
-                <TrendingUp size={14} className="mr-1" />
+              <Badge variant="info" size="sm">
+                <TrendingUp size={12} className="mr-1" />
                 Poupança do mês
-              </p>
-            </div>
+              </Badge>
+            </CardContent>
           </Card>
 
-          <Card className="relative">
+          <Card variant="elevated" className="relative">
             <div className="absolute top-4 right-4">
-              <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                <DollarSign className="text-blue-600" size={20} />
+              <div className="w-10 h-10 bg-myfinlife-blue-light/20 rounded-hex flex items-center justify-center">
+                <DollarSign className="text-myfinlife-blue" size={20} />
               </div>
             </div>
-            <div className="pt-2">
-              <p className="text-sm text-gray-600 mb-1">Saldo da Carteira</p>
-              <p className="text-3xl font-bold text-gray-900 mb-2">
+            <CardContent className="pt-2">
+              <p className="text-sm text-myfinlife-blue/70 mb-1">Saldo da Carteira</p>
+              <p className="text-3xl font-bold text-myfinlife-blue mb-2">
                 {formatCurrency(stats.walletBalance)}
               </p>
-              <p className={`text-sm flex items-center ${stats.walletBalance >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                {stats.walletBalance >= 0 ? <TrendingUp size={14} className="mr-1" /> : <TrendingDown size={14} className="mr-1" />}
+              <Badge variant={stats.walletBalance >= 0 ? "success" : "danger"} size="sm">
+                {stats.walletBalance >= 0 ? <TrendingUp size={12} className="mr-1" /> : <TrendingDown size={12} className="mr-1" />}
                 Receitas - Despesas
-              </p>
-            </div>
+              </Badge>
+            </CardContent>
           </Card>
         </div>
 
         {/* Budget Status Card */}
-        <Card className="mb-8">
-          <div className="flex items-center justify-between">
-            <div className="flex-1">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                Status do Orçamento Mensal
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div>
-                  <p className="text-sm text-gray-600">Orçamento Total</p>
-                  <p className="text-xl font-bold text-gray-900">
-                    {formatCurrency(stats.income)}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600">Consumido (Despesas + Investimentos)</p>
-                  <p className="text-xl font-bold text-gray-900">
-                    {formatCurrency(stats.budgetConsumed)}
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    {stats.income > 0 ? ((stats.budgetConsumed / stats.income) * 100).toFixed(1) : 0}% usado
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600">Saldo do Orçamento</p>
-                  <p className={`text-xl font-bold ${stats.budgetRemaining >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                    {formatCurrency(stats.budgetRemaining)}
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    {stats.budgetRemaining >= 0 ? 'Dentro do planejado' : 'Excedeu o orçamento'}
-                  </p>
-                </div>
+        <Card variant="elevated" className="mb-8">
+          <CardHeader>
+            <CardTitle>Status do Orçamento Mensal</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="text-center p-4 bg-myfinlife-gray-light rounded-hex">
+                <p className="text-sm text-myfinlife-blue/70 mb-2">Orçamento Total</p>
+                <p className="text-2xl font-bold text-myfinlife-blue">
+                  {formatCurrency(stats.income)}
+                </p>
+              </div>
+              <div className="text-center p-4 bg-myfinlife-blue-light/20 rounded-hex">
+                <p className="text-sm text-myfinlife-blue/70 mb-2">Consumido (Despesas + Investimentos)</p>
+                <p className="text-2xl font-bold text-myfinlife-blue">
+                  {formatCurrency(stats.budgetConsumed)}
+                </p>
+                <Badge variant="info" size="sm" className="mt-2">
+                  {stats.income > 0 ? ((stats.budgetConsumed / stats.income) * 100).toFixed(1) : 0}% usado
+                </Badge>
+              </div>
+              <div className="text-center p-4 bg-myfinlife-gray-light rounded-hex">
+                <p className="text-sm text-myfinlife-blue/70 mb-2">Saldo do Orçamento</p>
+                <p className={`text-2xl font-bold ${stats.budgetRemaining >= 0 ? 'text-success-500' : 'text-danger-500'}`}>
+                  {formatCurrency(stats.budgetRemaining)}
+                </p>
+                <Badge variant={stats.budgetRemaining >= 0 ? "success" : "danger"} size="sm" className="mt-2">
+                  {stats.budgetRemaining >= 0 ? 'Dentro do planejado' : 'Excedeu o orçamento'}
+                </Badge>
               </div>
             </div>
-          </div>
+          </CardContent>
         </Card>
 
         {/* Resumo Table */}
@@ -259,58 +260,62 @@ export function Dashboard() {
         {/* Charts */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
           {/* Despesas por Categoria */}
-          <Card>
-            <h2 className="text-lg font-semibold text-gray-900 mb-2">
-              Despesas por Categoria
-            </h2>
-            <p className="text-sm text-gray-600 mb-4">
-              Distribuição dos gastos do mês atual
-            </p>
-            {chartData.length > 0 ? (
-              <ResponsiveContainer width="100%" height={300}>
-                <PieChart>
-                  <Pie
-                    data={chartData}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={false}
-                    label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                    outerRadius={100}
-                    fill="#8884d8"
-                    dataKey="value"
-                  >
-                    {chartData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip formatter={(value: number) => formatCurrency(value)} />
-                </PieChart>
-              </ResponsiveContainer>
-            ) : (
-              <div className="flex items-center justify-center h-64 text-gray-500">
-                Nenhuma despesa registrada este mês
-              </div>
-            )}
+          <Card variant="elevated">
+            <CardHeader>
+              <CardTitle>Despesas por Categoria</CardTitle>
+              <p className="text-sm text-myfinlife-blue/70">
+                Distribuição dos gastos do mês atual
+              </p>
+            </CardHeader>
+            <CardContent>
+              {chartData.length > 0 ? (
+                <ResponsiveContainer width="100%" height={300}>
+                  <PieChart>
+                    <Pie
+                      data={chartData}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                      outerRadius={100}
+                      fill="#8884d8"
+                      dataKey="value"
+                    >
+                      {chartData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <Tooltip formatter={(value: number) => formatCurrency(value)} />
+                  </PieChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="flex items-center justify-center h-64 text-myfinlife-blue/50">
+                  Nenhuma despesa registrada este mês
+                </div>
+              )}
+            </CardContent>
           </Card>
 
           {/* Visão Mensal */}
-          <Card>
-            <h2 className="text-lg font-semibold text-gray-900 mb-2">
-              Visão Mensal
-            </h2>
-            <p className="text-sm text-gray-600 mb-4">
-              Comparativo de receitas e despesas
-            </p>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={monthlyData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="month" />
-                <YAxis />
-                <Tooltip formatter={(value: number) => formatCurrency(value)} />
-                <Bar dataKey="receitas" fill="#10b981" name="Receitas" />
-                <Bar dataKey="despesas" fill="#ef4444" name="Despesas" />
-              </BarChart>
-            </ResponsiveContainer>
+          <Card variant="elevated">
+            <CardHeader>
+              <CardTitle>Visão Mensal</CardTitle>
+              <p className="text-sm text-myfinlife-blue/70">
+                Comparativo de receitas e despesas
+              </p>
+            </CardHeader>
+            <CardContent>
+              <ResponsiveContainer width="100%" height={300}>
+                <BarChart data={monthlyData}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#B3DFFA" />
+                  <XAxis dataKey="month" stroke="#1A3F6B" />
+                  <YAxis stroke="#1A3F6B" />
+                  <Tooltip formatter={(value: number) => formatCurrency(value)} />
+                  <Bar dataKey="receitas" fill="#10b981" name="Receitas" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="despesas" fill="#ef4444" name="Despesas" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </CardContent>
           </Card>
         </div>
 

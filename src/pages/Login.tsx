@@ -37,12 +37,12 @@ export function Login() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-primary-100 px-4">
-      <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-myfinlife-blue-light/20 to-myfinlife-blue/10 px-4">
+      <div className="max-w-md w-full bg-myfinlife-white rounded-hex shadow-myfinlife-lg p-8">
         {/* Logo */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-primary-600 mb-2">Fin</h1>
-          <p className="text-gray-600">Bem-vindo de volta!</p>
+          <h1 className="text-4xl font-bold text-myfinlife-blue mb-2 font-montserrat">myfinlife</h1>
+          <p className="text-myfinlife-blue/70 font-montserrat">Bem-vindo de volta!</p>
         </div>
 
         {/* Formulário */}
@@ -66,13 +66,13 @@ export function Login() {
           />
 
           {error && (
-            <div className="bg-danger-50 text-danger-600 px-4 py-3 rounded-lg text-sm">
+            <div className="bg-danger-500/10 text-danger-500 px-4 py-3 rounded-hex text-sm font-montserrat">
               {error}
             </div>
           )}
 
           <div className="text-right">
-            <a href="#" className="text-sm text-primary-600 hover:text-primary-700">
+            <a href="#" className="text-sm text-myfinlife-blue hover:text-myfinlife-blue/80 font-montserrat">
               Esqueceu sua senha?
             </a>
           </div>
@@ -88,9 +88,9 @@ export function Login() {
         </form>
 
         {/* Link para cadastro */}
-        <p className="text-center text-gray-600 mt-6">
+        <p className="text-center text-myfinlife-blue/70 mt-6 font-montserrat">
           Ainda não tem uma conta?{' '}
-          <Link to="/signup" className="text-primary-600 hover:text-primary-700 font-medium">
+          <Link to="/signup" className="text-myfinlife-blue hover:text-myfinlife-blue/80 font-medium font-montserrat">
             Cadastre-se
           </Link>
         </p>

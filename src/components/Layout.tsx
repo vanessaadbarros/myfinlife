@@ -28,7 +28,7 @@ export function Layout({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-myfinlife-gray-light">
       {/* Sidebar */}
       <Sidebar 
         isOpen={sidebarOpen} 
@@ -40,14 +40,14 @@ export function Layout({
       {/* Main Content - Adjusts margin based on sidebar state */}
       <div className={`transition-all duration-300 ${sidebarCollapsed ? 'md:ml-16' : 'md:ml-64'}`}>
         {/* Top Bar */}
-        <div className="bg-white border-b border-gray-200 px-4 py-3">
+        <div className="bg-myfinlife-white border-b border-myfinlife-blue-light px-4 py-3 shadow-myfinlife">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               {/* Mobile Menu Button */}
               <Button
                 variant="ghost"
                 onClick={toggleSidebar}
-                className="md:hidden p-2"
+                className="md:hidden p-2 text-myfinlife-blue hover:bg-myfinlife-blue-light"
               >
                 <Menu size={20} />
               </Button>
@@ -59,12 +59,12 @@ export function Layout({
                     <Button
                       variant="ghost"
                       onClick={onBack}
-                      className="mb-2 flex items-center gap-2 text-gray-600 hover:text-gray-900"
+                      className="mb-2 flex items-center gap-2 text-myfinlife-blue/70 hover:text-myfinlife-blue hover:bg-myfinlife-blue-light"
                     >
                       ← Voltar
                     </Button>
                   )}
-                  <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
+                  <h1 className="text-2xl font-bold text-myfinlife-blue">{title}</h1>
                 </div>
               )}
             </div>
@@ -77,7 +77,7 @@ export function Layout({
         </div>
 
         {/* Page Content */}
-        <main className="p-4 md:p-6">
+        <main className="p-4 md:p-6 bg-myfinlife-gray-light min-h-screen">
           {children}
         </main>
       </div>

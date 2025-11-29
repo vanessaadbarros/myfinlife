@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
+import { Logo } from '@/components/Logo'
 import {
   Home,
   CreditCard,
@@ -132,58 +133,48 @@ export function Sidebar({ isOpen, onToggle, isCollapsed: externalCollapsed, onTo
 
       {/* Sidebar */}
       <div className={`
-        fixed top-0 left-0 h-full bg-white border-r border-gray-200 z-50 transition-all duration-300
+        fixed top-0 left-0 h-full bg-myfinlife-white border-r border-myfinlife-blue-light z-50 transition-all duration-300 shadow-myfinlife-lg
         ${isOpen ? 'translate-x-0' : '-translate-x-full'}
         ${isCollapsed ? 'w-16' : 'w-64'}
         md:translate-x-0
       `}>
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-200">
+        <div className="flex items-center justify-between p-4 border-b border-myfinlife-blue-light bg-myfinlife-gray-light">
           {!isCollapsed ? (
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">F</span>
-              </div>
-              <div>
-                <h1 className="font-bold text-gray-900 text-lg">FinApp</h1>
-                <p className="text-xs text-gray-500">Sistema Financeiro</p>
-              </div>
-            </div>
+            <Logo size="md" />
           ) : (
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center mx-auto">
-              <span className="text-white font-bold text-sm">F</span>
-            </div>
+            <LogoIcon size="md" className="mx-auto" />
           )}
           
           <div className="flex items-center gap-2">
             <button
               onClick={toggleCollapse}
-              className="hidden md:flex p-2 rounded-lg hover:bg-gray-100 transition-colors"
+              className="hidden md:flex p-2 rounded-hex hover:bg-myfinlife-blue-light transition-colors"
               title={isCollapsed ? 'Expandir' : 'Recolher'}
             >
-              <Menu size={16} className="text-gray-600" />
+              <Menu size={16} className="text-myfinlife-blue" />
             </button>
             <button
               onClick={onToggle}
-              className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+              className="md:hidden p-2 rounded-hex hover:bg-myfinlife-blue-light transition-colors"
             >
-              <X size={16} className="text-gray-600" />
+              <X size={16} className="text-myfinlife-blue" />
             </button>
           </div>
         </div>
 
         {/* User Info */}
         {!isCollapsed && (
-          <div className="p-4 border-b border-gray-200">
+          <div className="p-4 border-b border-myfinlife-blue-light bg-myfinlife-white">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
-                <User size={20} className="text-gray-600" />
+              <div className="w-10 h-10 bg-myfinlife-blue-light rounded-full flex items-center justify-center">
+                <User size={20} className="text-myfinlife-blue" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="font-medium text-gray-900 truncate">
+                <p className="font-medium text-myfinlife-blue truncate">
                   {profile?.name || 'Usuário'}
                 </p>
-                <p className="text-sm text-gray-500 truncate">
+                <p className="text-sm text-myfinlife-blue/70 truncate">
                   {profile?.email || 'email@exemplo.com'}
                 </p>
               </div>
@@ -199,23 +190,23 @@ export function Sidebar({ isOpen, onToggle, isCollapsed: externalCollapsed, onTo
                 <button
                   onClick={() => handleNavigate(item.path)}
                   className={`
-                    w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200
+                    w-full flex items-center gap-3 px-3 py-2.5 rounded-hex transition-all duration-200
                     ${isActive(item.path) 
-                      ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' 
-                      : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                      ? 'bg-myfinlife-blue-light text-myfinlife-blue border-r-2 border-myfinlife-blue shadow-myfinlife' 
+                      : 'text-myfinlife-blue/70 hover:bg-myfinlife-blue-light hover:text-myfinlife-blue'
                     }
                     ${isCollapsed ? 'justify-center' : ''}
                   `}
                   title={isCollapsed ? item.label : ''}
                 >
-                  <span className={isActive(item.path) ? 'text-blue-600' : item.color}>
+                  <span className={isActive(item.path) ? 'text-myfinlife-blue' : 'text-myfinlife-blue/60'}>
                     {item.icon}
                   </span>
                   {!isCollapsed && (
                     <>
                       <span className="font-medium">{item.label}</span>
                       {item.badge && item.badge > 0 && (
-                        <span className="ml-auto bg-red-100 text-red-600 text-xs px-2 py-1 rounded-full">
+                        <span className="ml-auto bg-danger-500 text-myfinlife-white text-xs px-2 py-1 rounded-full">
                           {item.badge}
                         </span>
                       )}
@@ -228,11 +219,11 @@ export function Sidebar({ isOpen, onToggle, isCollapsed: externalCollapsed, onTo
         </nav>
 
         {/* Footer */}
-        <div className="p-4 border-t border-gray-200">
+        <div className="p-4 border-t border-myfinlife-blue-light bg-myfinlife-gray-light">
           {!isCollapsed ? (
             <button
               onClick={handleSignOut}
-              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 transition-all duration-200"
+              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-hex text-myfinlife-blue/70 hover:bg-danger-500 hover:text-myfinlife-white transition-all duration-200"
             >
               <LogOut size={20} />
               <span className="font-medium">Sair</span>
@@ -240,7 +231,7 @@ export function Sidebar({ isOpen, onToggle, isCollapsed: externalCollapsed, onTo
           ) : (
             <button
               onClick={handleSignOut}
-              className="w-full flex items-center justify-center p-2.5 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 transition-all duration-200"
+              className="w-full flex items-center justify-center p-2.5 rounded-hex text-myfinlife-blue/70 hover:bg-danger-500 hover:text-myfinlife-white transition-all duration-200"
               title="Sair"
             >
               <LogOut size={20} />

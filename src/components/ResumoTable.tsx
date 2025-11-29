@@ -3,6 +3,8 @@ import { useBudgetBoxes } from '@/hooks/useBudgetBoxes'
 import { useBudgetBoxStats } from '@/hooks/useBudgetBoxStats'
 import { useTransactions } from '@/hooks/useTransactions'
 import { formatCurrency } from '@/utils/formatters'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card'
+import { Badge } from '@/components/ui/Badge'
 
 interface ResumoTableProps {
   monthlyIncome: number
@@ -55,102 +57,115 @@ export function ResumoTable({ monthlyIncome }: ResumoTableProps) {
 
   if (!budgetBoxes.length) {
     return (
-      <div className="bg-gray-800 rounded-lg p-6">
-        <h3 className="text-lg font-semibold text-orange-400 mb-4">Resumo</h3>
-        <div className="text-gray-300 text-center py-8">
-          Carregando dados...
-        </div>
-      </div>
+      <Card variant="elevated">
+        <CardHeader>
+          <CardTitle>Resumo das Caixas</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-myfinlife-blue/70 text-center py-8">
+            Carregando dados...
+          </div>
+        </CardContent>
+      </Card>
     )
   }
 
   return (
-    <div className="bg-gray-800 rounded-lg p-6">
-      <h3 className="text-lg font-semibold text-orange-400 mb-4">Resumo</h3>
-      
-      <div className="overflow-x-auto">
-        <table className="w-full text-white">
-          <thead>
-            <tr className="border-b border-gray-700">
-              <th className="text-left py-3 px-2 font-medium">Budget</th>
-              <th className="text-right py-3 px-2 font-medium">Valor Gasto</th>
-              <th className="text-right py-3 px-2 font-medium">Devo gastar</th>
-              <th className="text-right py-3 px-2 font-medium">Utilizado</th>
-              <th className="text-right py-3 px-2 font-medium">Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tableData.map((item) => (
-              <tr key={item.id} className="border-b border-gray-700">
-                <td className="py-3 px-2">
+    <Card variant="elevated">
+      <CardHeader>
+        <CardTitle>Resumo das Caixas</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-myfinlife-blue-light">
+                <th className="text-left py-3 px-2 font-medium text-myfinlife-blue">Budget</th>
+                <th className="text-right py-3 px-2 font-medium text-myfinlife-blue">Valor Gasto</th>
+                <th className="text-right py-3 px-2 font-medium text-myfinlife-blue">Devo gastar</th>
+                <th className="text-right py-3 px-2 font-medium text-myfinlife-blue">Utilizado</th>
+                <th className="text-right py-3 px-2 font-medium text-myfinlife-blue">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {tableData.map((item) => (
+                <tr key={item.id} className="border-b border-myfinlife-blue-light/30">
+                  <td className="py-3 px-2">
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg">{item.icon}</span>
+                      <span className="font-medium text-myfinlife-blue">{item.name}</span>
+                    </div>
+                  </td>
+                  <td className="py-3 px-2 text-right">
+                    <span className="text-myfinlife-blue font-medium">
+                      {formatCurrency(item.spentAmount)}
+                    </span>
+                  </td>
+                  <td className="py-3 px-2 text-right">
+                    <span className="text-myfinlife-blue font-medium">
+                      {formatCurrency(item.budgetAmount)}
+                    </span>
+                  </td>
+                  <td className="py-3 px-2 text-right">
+                    <Badge 
+                      variant={
+                        item.utilizedPercentage > 100 ? 'danger' : 
+                        item.utilizedPercentage > 80 ? 'warning' : 
+                        'success'
+                      } 
+                      size="sm"
+                    >
+                      {item.utilizedPercentage.toFixed(2)}%
+                    </Badge>
+                  </td>
+                  <td className="py-3 px-2 text-right">
+                    <Badge variant="info" size="sm">
+                      {item.percentageOfTotal.toFixed(2)}%
+                    </Badge>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+            <tfoot>
+              <tr className="border-t-2 border-myfinlife-blue">
+                <td className="py-4 px-2 font-bold">
                   <div className="flex items-center gap-2">
-                    <span className="text-lg">{item.icon}</span>
-                    <span className="font-medium">{item.name}</span>
+                    <span className="text-lg">📊</span>
+                    <span className="text-myfinlife-blue">Totais</span>
                   </div>
                 </td>
-                <td className="py-3 px-2 text-right">
-                  <span className="text-white font-medium">
-                    {formatCurrency(item.spentAmount)}
+                <td className="py-4 px-2 text-right">
+                  <span className="text-myfinlife-blue font-bold">
+                    {formatCurrency(totals.totalSpent)}
                   </span>
                 </td>
-                <td className="py-3 px-2 text-right">
-                  <span className="text-white font-medium">
-                    {formatCurrency(item.budgetAmount)}
+                <td className="py-4 px-2 text-right">
+                  <span className="text-myfinlife-blue font-bold">
+                    {formatCurrency(totals.totalBudget)}
                   </span>
                 </td>
-                <td className="py-3 px-2 text-right">
-                  <span className={`font-medium ${
-                    item.utilizedPercentage > 100 ? 'text-red-400' : 
-                    item.utilizedPercentage > 80 ? 'text-yellow-400' : 
-                    'text-green-400'
-                  }`}>
-                    {item.utilizedPercentage.toFixed(2)}%
-                  </span>
+                <td className="py-4 px-2 text-right">
+                  <Badge 
+                    variant={
+                      totals.totalUtilized > 100 ? 'danger' : 
+                      totals.totalUtilized > 80 ? 'warning' : 
+                      'success'
+                    } 
+                    size="md"
+                  >
+                    {totals.totalUtilized.toFixed(2)}%
+                  </Badge>
                 </td>
-                <td className="py-3 px-2 text-right">
-                  <span className="text-white font-medium">
-                    {item.percentageOfTotal.toFixed(2)}%
-                  </span>
+                <td className="py-4 px-2 text-right">
+                  <Badge variant="info" size="md">
+                    100.00%
+                  </Badge>
                 </td>
               </tr>
-            ))}
-          </tbody>
-          <tfoot>
-            <tr className="border-t-2 border-gray-600">
-              <td className="py-4 px-2 font-bold">
-                <div className="flex items-center gap-2">
-                  <span className="text-lg">📊</span>
-                  <span>Totais</span>
-                </div>
-              </td>
-              <td className="py-4 px-2 text-right">
-                <span className="text-white font-bold">
-                  {formatCurrency(totals.totalSpent)}
-                </span>
-              </td>
-              <td className="py-4 px-2 text-right">
-                <span className="text-white font-bold">
-                  {formatCurrency(totals.totalBudget)}
-                </span>
-              </td>
-              <td className="py-4 px-2 text-right">
-                <span className={`font-bold ${
-                  totals.totalUtilized > 100 ? 'text-red-400' : 
-                  totals.totalUtilized > 80 ? 'text-yellow-400' : 
-                  'text-green-400'
-                }`}>
-                  {totals.totalUtilized.toFixed(2)}%
-                </span>
-              </td>
-              <td className="py-4 px-2 text-right">
-                <span className="text-white font-bold">
-                  100.00%
-                </span>
-              </td>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
-    </div>
+            </tfoot>
+          </table>
+        </div>
+      </CardContent>
+    </Card>
   )
 }

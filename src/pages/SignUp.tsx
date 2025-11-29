@@ -51,12 +51,12 @@ export function SignUp() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-primary-100 px-4">
-      <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-myfinlife-blue-light/20 to-myfinlife-blue/10 px-4">
+      <div className="max-w-md w-full bg-myfinlife-white rounded-hex shadow-myfinlife-lg p-8">
         {/* Logo */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-primary-600 mb-2">Fin</h1>
-          <p className="text-gray-600">Gestor Financeiro Pessoal</p>
+          <h1 className="text-4xl font-bold text-myfinlife-blue mb-2 font-montserrat">myfinlife</h1>
+          <p className="text-myfinlife-blue/70 font-montserrat">Gestor Financeiro Pessoal</p>
         </div>
 
         {/* Formulário */}
@@ -98,7 +98,7 @@ export function SignUp() {
           />
 
           {error && (
-            <div className="bg-danger-50 text-danger-600 px-4 py-3 rounded-lg text-sm">
+            <div className="bg-danger-500/10 text-danger-500 px-4 py-3 rounded-hex text-sm font-montserrat">
               {error}
             </div>
           )}
@@ -114,9 +114,9 @@ export function SignUp() {
         </form>
 
         {/* Link para login */}
-        <p className="text-center text-gray-600 mt-6">
+        <p className="text-center text-myfinlife-blue/70 mt-6 font-montserrat">
           Já tem uma conta?{' '}
-          <Link to="/login" className="text-primary-600 hover:text-primary-700 font-medium">
+          <Link to="/login" className="text-myfinlife-blue hover:text-myfinlife-blue/80 font-medium font-montserrat">
             Faça login
           </Link>
         </p>

@@ -43,6 +43,7 @@ export function InvoiceModal({ isOpen, onClose, card, invoiceId }: InvoiceModalP
           .single()
 
         if (invError) throw invError
+        await ensureInvoiceTransactions(invoiceData)
         setInvoice(invoiceData)
 
         // Buscar transações da fatura
@@ -56,25 +57,27 @@ export function InvoiceModal({ isOpen, onClose, card, invoiceId }: InvoiceModalP
         setTransactions(transData || [])
       } else {
         // Buscar fatura atual (mais recente em aberto)
-        const { data: invoiceData, error: invError } = await supabase
+        const { data: invoicesData, error: invError } = await supabase
           .from('credit_card_invoices')
           .select('*')
           .eq('credit_card_id', card.id)
           .in('status', ['open', 'closed'])
-          .order('reference_month', { ascending: false })
-          .limit(1)
-          .single()
+          .order('closing_date', { ascending: true })
 
         if (invError && invError.code !== 'PGRST116') throw invError
-        
-        setInvoice(invoiceData || null)
 
-        if (invoiceData) {
+        if (invoicesData && invoicesData.length > 0) {
+          const today = new Date()
+          const upcoming = invoicesData.find((inv) => new Date(inv.closing_date) >= today)
+          const selectedInvoice = upcoming ?? invoicesData[invoicesData.length - 1]
+          await ensureInvoiceTransactions(selectedInvoice)
+          setInvoice(selectedInvoice)
+
           // Buscar transações da fatura
           const { data: transData, error: transError } = await supabase
             .from('transactions')
             .select('*')
-            .eq('invoice_id', invoiceData.id)
+            .eq('invoice_id', selectedInvoice.id)
             .order('date', { ascending: false })
 
           if (transError) throw transError
@@ -89,6 +92,45 @@ export function InvoiceModal({ isOpen, onClose, card, invoiceId }: InvoiceModalP
       setTransactions([])
     } finally {
       setLoading(false)
+    }
+  }
+  const ensureInvoiceTransactions = async (invoiceData: Invoice) => {
+    try {
+      const startDate = invoiceData.reference_month
+      const endDate = invoiceData.closing_date
+
+      const { data: missingTransactions } = await supabase
+        .from('transactions')
+        .select('id')
+        .eq('user_id', invoiceData.user_id)
+        .eq('payment_method', 'credit')
+        .eq('credit_card_id', card.id)
+        .is('invoice_id', null)
+        .gte('date', startDate)
+        .lte('date', endDate)
+
+      if (missingTransactions && missingTransactions.length > 0) {
+        const ids = missingTransactions.map((t) => t.id)
+
+        await supabase
+          .from('transactions')
+          .update({ invoice_id: invoiceData.id })
+          .in('id', ids)
+
+        const { data: invoiceTransactions } = await supabase
+          .from('transactions')
+          .select('amount')
+          .eq('invoice_id', invoiceData.id)
+
+        const total = (invoiceTransactions || []).reduce((sum, t) => sum + t.amount, 0)
+
+        await supabase
+          .from('credit_card_invoices')
+          .update({ total_amount: total })
+          .eq('id', invoiceData.id)
+      }
+    } catch (err) {
+      console.error('Erro ao garantir transações vinculadas à fatura:', err)
     }
   }
 

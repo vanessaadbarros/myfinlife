@@ -39,14 +39,14 @@ export function Modal({ isOpen, onClose, title, children, size = 'md' }: ModalPr
         />
         
         {/* Modal */}
-        <div className={`relative bg-white rounded-lg shadow-xl w-full ${sizes[size]} transform transition-all`}>
+        <div className={`relative bg-myfinlife-white rounded-hex shadow-myfinlife-lg w-full ${sizes[size]} transform transition-all`}>
           {/* Header */}
           {title && (
-            <div className="flex items-center justify-between p-6 border-b">
-              <h3 className="text-xl font-semibold text-gray-900">{title}</h3>
+            <div className="flex items-center justify-between p-6 border-b border-myfinlife-blue-light">
+              <h3 className="text-xl font-semibold text-myfinlife-blue font-montserrat">{title}</h3>
               <button
                 onClick={onClose}
-                className="text-gray-400 hover:text-gray-600 transition-colors"
+                className="text-myfinlife-blue/40 hover:text-myfinlife-blue/70 transition-colors rounded-hex p-1"
               >
                 <X size={24} />
               </button>
